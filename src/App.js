@@ -12,7 +12,9 @@ function List(props) {
 }
 
 function AddButton(props) {
-  <button disabled={props.inputIsEmpty}>Add</button>
+  return (
+    <button disabled={props.inputIsEmpty}>Add</button>
+  );
 }
 
 function DeleteButton(props) {
@@ -21,6 +23,25 @@ function DeleteButton(props) {
     	Delete Last Item
    	</button>
    );
+}
+
+function FormWrap(props) {
+  return (
+    <div class="form-wrap">
+    <form onSubmit={props.addItem}>
+      <input
+        type="text"
+        placeholder="Enter New Item"
+        value={props.value}
+        onChange={props.handleChange}
+      />
+
+	  <AddButton inputIsEmpty={props.inputIsEmpty} />
+     </form>
+
+	 <DeleteButton deleteLastItem={props.deleteLastItem} noItemsFound={props.noItemsFound} />
+	</div>
+  );
 }
 
 class App extends React.Component {
@@ -60,19 +81,14 @@ class App extends React.Component {
           <h1 className="App-title">ReactND - Coding Practice</h1>
         </header>
         <h2>Shopping List</h2>
-        <form onSubmit={this.addItem}>
-          <input
-            type="text"
-            placeholder="Enter New Item"
-            value={this.state.value}
-            onChange={this.handleChange}
-          />
-          <button disabled={this.inputIsEmpty()}>Add</button>
-
-		  <AddButton inputIsEmpty={this.inputIsEmpty()} />
-        </form>
-
-		<DeleteButton deleteLastItem={this.deleteLastItem} noItemsFound={this.noItemsFound()} />
+        <FormWrap 
+    		addItem={this.addItem} 
+			value={this.state.value}
+			handleChange={this.handleChange}
+			inputIsEmpty={this.inputIsEmpty()}
+			deleteLastItem={this.deleteLastItem}
+			noItemsFound={this.noItemsFound()}
+		/>
 
     	<p className="items">Items</p>
         <List items={this.state.items} />
